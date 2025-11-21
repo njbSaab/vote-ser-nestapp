@@ -1,0 +1,17 @@
+# 1. Запросить код
+POST http://localhost:4700/auth/send-code 
+  -H Content-Type: application/json
+  -d {
+    "email": "njs1@ukr.net",
+    "name": "Александр",
+    "siteUrl": "https://betvoice.io"
+  }
+
+# 2. Подтвердить
+POST http://localhost:4700/auth/verify-code 
+  -H Content-Type: application/json
+  -d {
+    "email": "njs1@ukr.net",
+    "code": "205981",
+    "browserInfo": { "userAgent": "Chrome" }
+  }

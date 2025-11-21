@@ -1,0 +1,28 @@
+# docker-compose.yml — только для локалки
+name: betvoice
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pg-betvoice
+    restart: always
+    environment:
+      POSTGRES_USER: betvoice
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: betvoice
+    ports:
+      - "3317:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-betvoice
+    restart: always
+    ports:
+      - "6380:6379"
+    # без пароля, без сохранения — чисто для разработки
+    command: redis-server --save "" --appendonly no
+
+volumes:
+  postgres_data:
