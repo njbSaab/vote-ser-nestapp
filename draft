@@ -72,6 +72,7 @@ GET /profile → статистика (сколько голосовал, ско
 История голосов с результатами событий
 Скоро: магазин призов и обмен баллов
 
+---------------------------------------------
 Пользователь может обменять баллы на призы:
 Футболка — 50 баллов
 Билет на матч — 200 баллов
@@ -113,3 +114,16 @@ football-chelsea-arsenal-091025
 Как работают события (жизненный цикл)
 ЭтапЧто происходитДо стартаСобытие видно, но голосовать нельзяАктивноМожно голосовать (1–2 недели)ОконченоГолосование закрыто, статистика зафиксирована, начисляются баллы
 → Всё автоматически по датам
+
+
+
+
+❯ curl -X POST \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzhhMjRiNi1iMmQ0LTRmMDQtYjVkMy04NWJjN2RmNDUwNDYiLCJlbWFpbCI6Im5qczFAdWtyLm5ldCIsImlhdCI6MTc2Mzc0ODI3NSwiZXhwIjoxNzY2MzQwMjc1fQ.pk6y0xghk9oeH8bNQJcFmnuhlxW2aDsT3W3Jmk_z_Uo" \
+  -H "Content-Type: application/json" \
+  -d '{"choice": 1}' \
+  http://localhost:4700/events/football-chelsea-arsenal-211225/vote
+
+
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzhhMjRiNi1iMmQ0LTRmMDQtYjVkMy04NWJjN2RmNDUwNDYiLCJlbWFpbCI6Im5qczFAdWtyLm5ldCIsImlhdCI6MTc2Mzc0ODI3NSwiZXhwIjoxNzY2MzQwMjc1fQ.pk6y0xghk9oeH8bNQJcFmnuhlxW2aDsT3W3Jmk_z_Uo" \
+     http://localhost:4700/events

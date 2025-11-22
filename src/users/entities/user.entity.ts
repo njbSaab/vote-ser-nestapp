@@ -20,7 +20,7 @@ export class User {
   @Column({ type: 'varchar', length: 191, nullable: false })
   name: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: 'boolean', default: false, name: 'email_verified' })
   emailVerified: boolean;
 
   // JSON с историей действий (например: голосования, входы и т.д.)
@@ -28,7 +28,7 @@ export class User {
   isHistory: string; // будет храниться как JSON.stringify(...)
 
   // Информация о браузере/устройстве при регистрации или входе
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json', nullable: true, name: 'browser_info' })
   browserInfo: {
     userAgent?: string;
     platform?: string;
@@ -40,10 +40,10 @@ export class User {
     fingerprint?: string; // если будешь использовать client-fingerprint
   };
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
   @Column({ type: 'int', default: 0 })

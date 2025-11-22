@@ -5,6 +5,9 @@ import { DatabaseModule } from './database/database.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { EmailModule } from './email/email.module';
+import { EventsModule } from './events/events.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    EmailModule,
+    EventsModule,
+    ProfileModule
   ],
 })
 export class AppModule {}

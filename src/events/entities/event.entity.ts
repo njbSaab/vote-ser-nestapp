@@ -7,10 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  ManyToOne,
   Unique,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
 import { UserVote } from './user-vote.entity';
 
 export enum SportType {
@@ -20,69 +18,63 @@ export enum SportType {
   ESPORTS = 'esports',
   HOCKEY = 'hockey',
   VOLLEYBALL = 'volleyball',
-  // легко добавить новые
 }
 
 export enum EventStatus {
   INACTIVE = 'inactive',
   ACTIVE = 'active',
-  POSTPONED = 'postponed', // перенесено
+  POSTPONED = 'postponed',
   ENDED = 'ended',
-  CANCELLED = 'cancelled', // несостоялось
+  CANCELLED = 'cancelled',
 }
 
 export enum VoteChoice {
-  A = 1,     // победа первой команды/игрока
-  B = 2,     // победа второй
-  DRAW = 3,  // ничья (для тех видов, где есть)
+  A = 1,
+  B = 2,
+  DRAW = 3,
 }
 
 @Entity({ name: 'events' })
-@Unique(['typeEventId']) // гарантируем уникальность slug
+@Unique(['typeEventId'])
 @Index('idx_events_status', ['status'])
 @Index('idx_events_sport', ['sport'])
-@Index('idx_events_voting_ends_at', ['votingEndsAt']) // для поиска активных
+@Index('idx_events_voting_ends_at', ['votingEndsAt'])
 @Index('idx_events_is_public', ['isPublic'])
 export class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // Это основной публичный slug: football-chelsea-arsenal-211225
-  @Column({ type: 'varchar', length: 255, name: 'type_event_id' })
-  @Index({ unique: true }) // дублируем для явности
+  @Column({ type: 'varchar', length: 255, name: 'type_event_id', unique: true })
   typeEventId: string;
 
   @Column({ type: 'varchar', length: 255 })
-  title: string; // "Челси — Арсенал"
+  title: string;
 
   @Column({ type: 'enum', enum: SportType })
   sport: SportType;
 
-  @Column({ type: 'varchar', length: 150 })
+  // ←←←← ВСЕ ОСТАЛЬНЫЕ С name В snake_case
+  @Column({ type: 'varchar', length: 150, name: 'participant_a' })
   participantA: string;
 
-  @Column({ type: 'varchar', length: 150 })
+  @Column({ type: 'varchar', length: 150, name: 'participant_b' })
   participantB: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true, name: 'logo_a' })
   logoA?: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true, name: 'logo_b' })
   logoB?: string;
 
-  // Когда начинается матч (и когда заканчивается голосование, если не переопределить)
   @Column({ type: 'timestamptz', name: 'event_starts_at' })
   eventStartsAt: Date;
 
-  // Можно задать отдельно, если голосование закрывается раньше/позже
   @Column({ type: 'timestamptz', name: 'voting_ends_at' })
   votingEndsAt: Date;
 
-  // 1 = A, 2 = B, 3 = ничья, null = ещё не завершено
   @Column({ type: 'smallint', nullable: true })
   result?: VoteChoice | null;
 
-  // Денормализованные счётчики — чтобы не считать каждый раз на лету
   @Column({ type: 'int', default: 0, name: 'total_votes' })
   totalVotes: number;
 
@@ -101,7 +93,6 @@ export class Event {
   @Column({ type: 'enum', enum: EventStatus, default: EventStatus.INACTIVE })
   status: EventStatus;
 
-  // Опциональные картинки/призы для конкретного события
   @Column({ type: 'varchar', length: 500, nullable: true, name: 'image_bg_desktop' })
   imageBgDesktop?: string;
 
@@ -117,7 +108,6 @@ export class Event {
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;
 
-  // Связи
   @OneToMany(() => UserVote, (vote) => vote.event, { cascade: true })
   votes: UserVote[];
 }

@@ -31,7 +31,7 @@ export class UserVote {
   @Column({ type: 'int' })
   eventId: number;
 
-  @Column({ type: 'smallint', enum: [1, 2, 3] })
+  @Column({ type: 'smallint', enum: [1, 2, 3], name: 'vote_choice' })
   choice: VoteChoice; // 1=A, 2=B, 3=ничья
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })

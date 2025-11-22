@@ -65,8 +65,8 @@ export class VotesService {
       await manager.save(event);
 
       // 3. +1 балл и +1 голос пользователю
-      await manager.increment(User, { id: userId }, 'points', 1);
-      await manager.increment(User, { id: userId }, 'totalVotes', 1);
+      await manager.increment(User, { uuid: userId }, 'points', 1);
+      await manager.increment(User, { uuid: userId }, 'totalVotes', 1);
     });
 
     // 4. Рассылаем обновление всем на странице
