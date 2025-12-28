@@ -13,20 +13,20 @@ export class JwtGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers.authorization;
+    
+    // ИЩЕМ ТОКЕН В КУКАХ!
+    const token = request.cookies?.access_token;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!token) {
       throw new UnauthorizedException('Токен не передан');
     }
 
-    const token = authHeader.split(' ')[1];
-
     try {
       const payload = this.jwtService.verify(token);
-      request.user = payload; // ← сюда попадает { sub: uuid, email: '...' }
+      request.user = payload;
       return true;
     } catch (err) {
-      throw new UnauthorizedException('Неверный или просроченный токен');
+      throw new UnauthorizedException('Недействительный токен');
     }
   }
 }

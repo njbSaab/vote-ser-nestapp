@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { UserVote } from '../events/entities/user-vote.entity';
 import { Event } from '../events/entities/event.entity';
+import { log } from 'console';
 
 @Injectable()
 export class ProfileService {
@@ -41,6 +42,19 @@ export class ProfileService {
       isCorrect: v.event.result ? v.choice === v.event.result : null,
       votedAt: v.createdAt,
       grandPrize: v.event.grandPrize,
+      logoA: v.event.logoA,
+      logoB: v.event.logoB,
+      imageBgDesktop: v.event.imageBgDesktop,
+      imageBgMobile: v.event.imageBgMobile,
+      sport: v.event.sport,
+      typeEventId: v.event.typeEventId,
+      id: v.event.id,
+      envetEndAt: v.event.votingEndsAt,
+      eventStartsAt: v.event.eventStartsAt,
+      votesA: v.event.votesA,
+      votesB: v.event.votesB,
+      votesDraw: v.event.votesDraw,
+      totalVotes: v.event.totalVotes,
     }));
 
     return {

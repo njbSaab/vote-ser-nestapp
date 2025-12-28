@@ -1,3 +1,4 @@
+
 // src/modules/events/dto/event-public.dto.ts
 export class EventPublicDto {
   id: number;
@@ -31,3 +32,5 @@ export class EventPublicDto {
   userAlreadyVoted: boolean;
   userChoice?: 1 | 2 | 3 | null;
 }
+
+

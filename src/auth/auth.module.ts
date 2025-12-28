@@ -20,4 +20,4 @@ import { Global, Module } from '@nestjs/common';   // ← добавь Global
   providers: [AuthService],
   exports: [AuthService],   // ← можно ещё JwtService экспортировать, но не обязательно
 })
-export class AuthModule {}
+export class AuthModule {}  

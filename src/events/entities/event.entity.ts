@@ -18,6 +18,7 @@ export enum SportType {
   ESPORTS = 'esports',
   HOCKEY = 'hockey',
   VOLLEYBALL = 'volleyball',
+  BOX = 'box',
 }
 
 export enum EventStatus {
@@ -90,6 +91,9 @@ export class Event {
   @Column({ type: 'boolean', default: false, name: 'is_public' })
   isPublic: boolean;
 
+  @Column({ type: 'boolean', default: false, name: 'is_main_event' })
+  isMainEvent: boolean;
+
   @Column({ type: 'enum', enum: EventStatus, default: EventStatus.INACTIVE })
   status: EventStatus;
 
@@ -101,6 +105,12 @@ export class Event {
 
   @Column({ type: 'varchar', length: 255, nullable: true, name: 'grand_prize' })
   grandPrize?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'for_every_prize' })
+  forEveryPrize?: string;
+
+   @Column({ type: 'varchar', length: 255, nullable: true, name: 'sub_sport_title' })
+  subSportTitle?: string;
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
