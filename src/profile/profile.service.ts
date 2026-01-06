@@ -6,6 +6,7 @@ import { User } from '../users/entities/user.entity';
 import { UserVote } from '../events/entities/user-vote.entity';
 import { Event } from '../events/entities/event.entity';
 import { log } from 'console';
+import { ProfileMapper } from './profile.mapper';
 
 @Injectable()
 export class ProfileService {
@@ -13,6 +14,7 @@ export class ProfileService {
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(UserVote) private voteRepo: Repository<UserVote>,
     @InjectRepository(Event) private eventRepo: Repository<Event>,
+    private mapper: ProfileMapper,
   ) {}
 
   async getMe(userId: string) {
@@ -27,44 +29,6 @@ export class ProfileService {
       order: { createdAt: 'DESC' },
     });
 
-    const history = votesHistory.map(v => ({
-      eventTitle: v.event.title,
-      participantA: v.event.participantA,
-      participantB: v.event.participantB,
-      yourChoice: v.choice === 1 ? v.event.participantA : v.choice === 2 ? v.event.participantB : 'Ничья',
-      result: v.event.result
-        ? v.event.result === 1
-          ? v.event.participantA
-          : v.event.result === 2
-          ? v.event.participantB
-          : 'Ничья'
-        : 'Ещё не известен',
-      isCorrect: v.event.result ? v.choice === v.event.result : null,
-      votedAt: v.createdAt,
-      grandPrize: v.event.grandPrize,
-      logoA: v.event.logoA,
-      logoB: v.event.logoB,
-      imageBgDesktop: v.event.imageBgDesktop,
-      imageBgMobile: v.event.imageBgMobile,
-      sport: v.event.sport,
-      typeEventId: v.event.typeEventId,
-      id: v.event.id,
-      envetEndAt: v.event.votingEndsAt,
-      eventStartsAt: v.event.eventStartsAt,
-      votesA: v.event.votesA,
-      votesB: v.event.votesB,
-      votesDraw: v.event.votesDraw,
-      totalVotes: v.event.totalVotes,
-    }));
-
-    return {
-      ...user,
-      votesHistory: history,
-      stats: {
-        totalVotes: user.totalVotes,
-        correct: user.correctPredictions,
-        accuracy: user.totalVotes > 0 ? Math.round((user.correctPredictions / user.totalVotes) * 100) : 0,
-      },
-    };
+    return this.mapper.toProfileDto(user, votesHistory);
   }
 }

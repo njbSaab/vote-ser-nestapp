@@ -9,11 +9,12 @@ import {
   Req,
   BadRequestException,
 } from '@nestjs/common';
-import { EventsPublicService } from './events-public.service';
-import { VotesService } from './votes/votes.service';
-import { VoteDto } from './dto/vote.dto';
-import { JwtGuard } from '../common/guards/jwt-auth.guard';
-import { GetUser } from '../common/decorators/get-user.decorator';
+import { EventsPublicService } from '../services/events-public.service';
+import { VotesService } from '../votes/votes.service';
+import { VoteDto } from '../dto/vote.dto';
+import { JwtGuard } from '../../common/guards/jwt-auth.guard';
+import { GetUser } from '../../common/decorators/get-user.decorator';
+import {EventDashboardService} from '../services/event-dashboard.service'
 
 @Controller('events')
 export class EventsPublicController {
